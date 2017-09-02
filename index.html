@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  </head>
+  <body>
+
+    <a-scene>
+        <a-assets>
+            <img id="skyTexture"
+                src="img/stars2.jpg">
+        </a-assets>
+
+
+      <a-entity position="4 2 8" rotation="0 0 0">
+        <a-entity camera look-controls wasd-controls>
+			<a-entity cursor="fuse: true; fuseTimeout: 500"
+            position="0 0 -2"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.027"
+            material="color: black; shader: flat"
+  			</a-entity>
+    	</a-entity>
+      </a-entity>
+	<a-entity light="type: point; color: 'white'; intensity: 0.8" position="20 40 20"></a-entity>
+	<a-entity light="type: point; color: 'white'; intensity: 0.8" position="-20 40 20"></a-entity>
+    <a-sky 
+        src="#skyTexture">
+    </a-sky>
+	</a-scene>
+
+  <script>
+  	// default alpha for bars
+	var alpha = 0.9
+
+    
+
+
+    d3.csv('GDP-Capita.csv', function(data){
+
+        let dataVariable = 'Diff 2008-2012'
+
+        data.forEach(function(d) {
+            d[dataVariable] = +d[dataVariable];
+        });
+
+        let yScale = d3.scale.linear()
+            .range([0, 3])
+            .domain(d3.extent(data, function(d){ console.log(d[dataVariable]); return d[dataVariable]}));
+
+        console.log(yScale.domain())
+    
+        let scene = d3.select('a-scene')
+
+        let bars = scene.selectAll('a-box.bar')
+            .data(data)
+          .enter().append('a-box')
+            .classed('bar', true);
+
+        bars.attr({
+            position : function(d,i) {
+                var x =  i * 2
+                var y = yScale(d[dataVariable])/2;
+                var z = 0
+                return x + " " + y + " " + z
+            },
+            width: function(d) { return 1.5},
+            depth: function(d) { return 0.3},
+            height: function(d) {return yScale(d[dataVariable])},
+            opacity: alpha,
+            color: 'white'
+            });
+
+
+        let text = scene.selectAll('a-text .desc')
+            .data(data)
+          .enter().append('a-text')
+          .classed('desc', true);
+
+        text.attr({
+            position : function(d,i) {
+                var x =  i * 2
+                var y = -0.35
+                var z = 0
+                return x + " " + y + " " + z
+            },
+            value: function(d){return d['Country Name'].replace(' ', '\n');},
+            color: 'white',
+            align: 'center',
+            baseline: 'top',
+            width: 8,
+        })
+
+        let numFormat = d3.format("$,.2s");
+        let numText = scene.selectAll('a-text .num')
+            .data(data)
+          .enter().append('a-text')
+            .classed('num', true);
+
+          numText.attr({
+            position : function(d,i) {
+                var x =  i * 2
+                var y = yScale(d[dataVariable]) + 0.5
+                var z = 0
+                return x + " " + y + " " + z
+            },
+            value: function(d){return numFormat(d[dataVariable]).replace('G', 'B');},
+            color: 'white',
+            align: 'center',
+            width: 8,
+        })
+
+        scene.append('a-text')
+            .attr({
+                position: '5 5 0',
+                value: 'Change in GDP 2008-2012',
+                color: 'white',
+                align: 'center',
+                width: 10,
+            })
+
+
+
+
+
+    })
+
+    
+    
+  </script>
+
+  <script>
+
+    $(".bar").each(function() {
+        this.components.material.material.alphaTest = 0.5;
+      this.components.material.material.depthWrite = false;
+      this.components.material.material.needsUpdate = true;;
+    });
+
+	</script>
+    
+  <body>
+</html>

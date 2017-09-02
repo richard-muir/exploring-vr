@@ -1,0 +1,23 @@
+<html>
+    <head>
+      <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    </head>
+    <body>
+      <a-scene>
+            <a-assets>
+                <img id="skyTexture" src="img/360texture.jpg">
+            </a-assets>
+
+        <a-box position="-1 2.5 -3" src="https://i.imgur.com/mYmmbrp.jpg" rotation="0 45 45" color="#4CC3D9"></a-box>
+        <a-sphere position="0 1.25 -10" src='http://i.imgur.com/ZdtFHSP.jpg' radius="1.25" color="#EF2D5E">
+            <a-ring position='1 1 2' rotation='0 0 45' color="teal" radius-inner="1" radius-outer="2" ></a-ring>
+        </a-sphere>
+        <a-cylinder position="-2 0.75 -3" rotation='90 90 0' radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+        <a-plane position="0 0 -4" src='http://i.imgur.com/ZdtFHSP.jpg' rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        <a-sky src="https://cdn.glitch.com/b870d9ec-1139-44f9-b462-223e4a2c74e7%2Fsechelt.jpg?1490307995926" radius="300"></a-sky>
+        <a-torus-knot color="#B84A39" position='-5 2 -3' arc="5" p="1" q="2" radius="1" radius-tubular="0.1"></a-torus-knot>
+        <a-dodecahedron color="#FF926B" position='5 2 -3' radius="1"></a-dodecahedron>
+        <a-text value="Hello, World!" color='black' align='center' position='0 2.5 -2'></a-text>
+      </a-scene>
+    </body>
+  </html>
